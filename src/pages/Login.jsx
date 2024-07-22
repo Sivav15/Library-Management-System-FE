@@ -37,7 +37,11 @@ const Login = () => {
                 const { data } = await axios.post(login_api, values);
                 showSnackbar(data.message, 'success');
                 dispatch(authReducer(data));
-                navigate('/task');
+                if (data.role === 'admin') {
+                    navigate('/admin');
+                    return
+                }
+                navigate('/user');
             } catch (error) {
                 if (error.response) {
                     const { status, data } = error.response;

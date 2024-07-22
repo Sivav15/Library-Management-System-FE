@@ -1,8 +1,11 @@
 import React from 'react'
+import ResponsiveTable from './ResponsiveTable'
 
 const ViewBook = () => {
     return (
-        <div>ViewBook</div>
+        <div>
+            <ResponsiveTable />
+        </div>
     )
 }
 

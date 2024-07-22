@@ -1,34 +1,28 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Dialog, TextField, Button, IconButton } from '@mui/material';
+import { Dialog, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { FaCloudUploadAlt } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 import useSnackbar from '../hooks/useSnackbar';
 import useLoadingModal from '../hooks/useLoadingModal';
-import { addBook_api } from '../services/api';
+
+// import { updateBookReducer } from '../features/bookSlice';
+import { updateBook_api } from '../services/api';
 import { addBooksReducer } from '../features/bookSlice';
 
 // Validation schema
 const validationSchema = Yup.object({
     title: Yup.string().required('Title is required'),
     author: Yup.string().required('Author is required'),
-    img: Yup.mixed().required('Image is required'),
 });
 
-const AddBookModal = ({ open, onClose }) => {
-    const [imgPreview, setImgPreview] = useState(null);
-    const [imgFileName, setImgFileName] = useState('');
-    const fileInputRef = useRef(null);
-
+const EditBookModal = ({ open, onClose, data }) => {
     const { showSnackbar, SnackbarComponent } = useSnackbar();
     const { showLoading, hideLoading, LoadingModalComponent } = useLoadingModal();
-    const { token, id } = useSelector((state) => state.auth.auth);
+    const { token } = useSelector((state) => state.auth.auth);
     const books = useSelector((state) => state.books.books);
-    // console.log(books);
 
     const dispatch = useDispatch();
 
@@ -37,33 +31,35 @@ const AddBookModal = ({ open, onClose }) => {
         initialValues: {
             title: '',
             author: '',
-            img: null,
         },
         validationSchema,
         onSubmit: async (values) => {
             showLoading();
 
+            const val = {
+                title: values.title,
+                author: values.author,
+
+            }
+
             try {
-                // Upload image
-                const formData = new FormData();
-                formData.append('img', values.img);
-                formData.append('title', values.title);
-                formData.append('author', values.author);
-                formData.append('user_id', values.user_id);
-
-
-                const { data } = await axios.post(addBook_api, formData, {
+                const response = await axios.put(`${updateBook_api}/${data._id}`, val, {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
                     }
                 });
 
+                const newBooks = books.map((book) => {
+                    if (book._id === data._id) {
+                        return response.data.book
+                    }
+                    return book
+                })
 
-                dispatch(addBooksReducer([data.book, ...books]));
+                dispatch(addBooksReducer(newBooks));
 
                 formik.resetForm();
-                setImgPreview(null);
-                setImgFileName('');
                 onClose();
 
             } catch (error) {
@@ -79,22 +75,27 @@ const AddBookModal = ({ open, onClose }) => {
         },
     });
 
-    // Clear form and image preview when the modal is closed
+    // Clear form when the modal is closed
     useEffect(() => {
         if (!open) {
             formik.resetForm();
-            setImgPreview(null);
-            setImgFileName('');
-            if (fileInputRef.current) {
-                fileInputRef.current.value = '';
-            }
         }
     }, [open]);
+
+    // Update formik values when data changes
+    useEffect(() => {
+        if (data) {
+            formik.setValues({
+                title: data.title,
+                author: data.author,
+            });
+        }
+    }, [data]);
 
     return (
         <Dialog open={open} onClose={onClose}>
             <div className="flex flex-col p-6 bg-white rounded-lg shadow-lg w-full max-w-md mx-auto">
-                <p className="text-lg font-semibold mb-4">Add Book</p>
+                <p className="text-lg font-semibold mb-4">Edit Book</p>
                 <form onSubmit={formik.handleSubmit} className="space-y-4">
                     <TextField
                         label="Title"
@@ -123,61 +124,11 @@ const AddBookModal = ({ open, onClose }) => {
                         helperText={formik.touched.author && formik.errors.author}
                         className="rounded-md"
                     />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        id="upload-button"
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        onChange={(event) => {
-                            formik.setFieldValue("img", event.currentTarget.files[0]);
-                            if (event.currentTarget.files[0]) {
-                                setImgPreview(URL.createObjectURL(event.currentTarget.files[0]));
-                                setImgFileName(event.currentTarget.files[0].name);
-                            }
-                        }}
-                    />
-                    <label htmlFor="upload-button">
-                        <Button
-                            variant="contained"
-                            component="span"
-                            color="primary"
-                            sx={{ mt: 3 }}
-                            startIcon={<FaCloudUploadAlt />}
-                            className="w-full"
-                        >
-                            Upload Image
-                        </Button>
-                    </label>
-                    {formik.touched.img && formik.errors.img && (
-                        <div className="text-red-500 text-sm">{formik.errors.img}</div>
-                    )}
-                    {imgPreview && (
-                        <div className="flex items-center mt-4 space-x-4">
-                            <img src={imgPreview} alt="Preview" className="w-12 h-12 object-contain rounded-md" />
-                            <p className="text-sm">{imgFileName}</p>
-                            <IconButton onClick={() => {
-                                formik.setFieldValue("img", null);
-                                setImgPreview(null);
-                                setImgFileName('');
-                                if (fileInputRef.current) {
-                                    fileInputRef.current.value = '';
-                                }
-                            }}>
-                                <MdDelete />
-                            </IconButton>
-                        </div>
-                    )}
                     <div className="flex justify-end space-x-4 mt-6">
                         <Button
                             type="button"
                             onClick={() => {
                                 formik.resetForm();
-                                setImgPreview(null);
-                                setImgFileName('');
-                                if (fileInputRef.current) {
-                                    fileInputRef.current.value = '';
-                                }
                                 onClose();
                             }}
                             className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
@@ -199,4 +150,4 @@ const AddBookModal = ({ open, onClose }) => {
     );
 };
 
-export default AddBookModal;
+export default EditBookModal;
