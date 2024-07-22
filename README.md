@@ -33,14 +33,16 @@ This guide will help you set up and run the Library Management System frontend l
 
 ### Running the Application
 
-1. **Start the server:**
+1. **Start the development serve:**
 
    ```bash
    npm run dev
    ```
 
-2. **Verify the server is running:**
+2. **Open your web browser and navigate to:**
 
    ```bash
-   Open your browser or use a tool like curl or Postman to make a request to http://localhost:5173 (or the port specified) to ensure the server is up and running.
+   http://localhost:5173
    ```
+
+   By following these steps, you should be able to see the Library Management System frontend running in your browser.
