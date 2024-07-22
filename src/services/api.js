@@ -3,7 +3,7 @@ let host;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
   host = "http://localhost:4000";
 } else {
-  host = "";
+  host = "https://library-management-system-be.vercel.app";
 }
 
 // Authenticate
