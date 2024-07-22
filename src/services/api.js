@@ -19,4 +19,7 @@ export const viewBook_api = `${host}/api/books`;
 export const updateBook_api = `${host}/api/books/update`;
 export const DeleteBook_api = `${host}/api/books/delete`;
 
-// http://localhost:4000/1721646868179_sivanathan.jpg
+// borrow and return a book
+
+export const borrowBook_api = `${host}/api/books/borrow_book`;
+export const returnBook_api = `${host}/api/books/return_book`;

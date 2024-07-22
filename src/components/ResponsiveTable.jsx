@@ -137,6 +137,12 @@ const ResponsiveTable = () => {
             ),
         },
         {
+            field: 'borrowCount',
+            headerName: 'Borrow Count',
+            minWidth: 150, // Minimum width for the Borrow Count column
+            flex: 0.5
+        },
+        {
             field: 'actions',
             headerName: 'Actions',
             minWidth: 150, // Minimum width for the Actions column
@@ -160,10 +166,11 @@ const ResponsiveTable = () => {
         author: item.author,
         img: item.img,
         _id: item._id,
+        borrowCount: item.borrowedBy.length || 0 // Include borrow count
     }));
 
     return (
-        <div style={{ height: 500, width: '100%' }}>
+        <div style={{ width: '100%' }}>
             <DataGrid
                 rows={rows}
                 columns={columns}

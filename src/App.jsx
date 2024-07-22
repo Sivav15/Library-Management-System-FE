@@ -27,11 +27,15 @@ function App() {
       ],
     },
     {
-      path: "/books",
+      path: "/user",
       element: <UserLayout />,
       children: [
         {
-          path: "",  // Relative path, equivalent to "/books"
+          path: "",
+          element: <Navigate to="/user/books" replace />,
+        },
+        {
+          path: "books",
           element: <Books />,
         },
       ],
