@@ -1,46 +1,56 @@
 import React from 'react'
 import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
+import UserLayout from './layout/UserLayout';
+import Books from './pages/Books';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminLayout from './layout/AdminLayout';
+import Dashboard from './pages/Dashboard';
 
 
 function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <HomeLayout />,
+      path: "/admin",
+      element: <AdminLayout />,
       children: [
-        // {
-        //   path: "/",
-        //   element: <Navigate to="/task" replace />,
-        // },
         {
-          path: "task",
-          element:
-            <AuthProtectedRoute>
-              <Task />
-            </AuthProtectedRoute>
-          ,
+          path: "",
+          element: <Navigate to="/admin/dashboard" replace />,
         },
         {
-          path: "/",
-          element: <Login />,
+          path: "dashboard",
+          element: <Dashboard />,
         },
+      ],
+    },
+    {
+      path: "/books",
+      element: <UserLayout />,
+      children: [
         {
-          path: "/register",
-          element: <Register />,
+          path: "",  // Relative path, equivalent to "/books"
+          element: <Books />,
         },
-        // {
-        //   path: "*",
-        //   element: <NotFound />,
-        // },
       ],
     },
     {
       path: "*",
-      element: <NotFound />,
+      element: <div>Not found</div>,
+    },
+    {
+      path: "/",
+      element: <Login />,
+    },
+    {
+      path: "/register",
+      element: <Register />,
     },
   ]);
+
+
 
   return (
     <RouterProvider router={router} />
