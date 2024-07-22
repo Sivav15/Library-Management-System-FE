@@ -117,7 +117,7 @@ const Login = () => {
                     </form>
                     <div className="mt-4 text-center">
                         <p className="text-gray-600">Don't have an account? <span onClick={registerNavigation} className="text-blue-600 cursor-pointer">Signup</span></p>
-                        <GoogleCallback />
+                        <GoogleCallback action={'login'} message={'Signin with Google'} />
                     </div>
 
                 </div>

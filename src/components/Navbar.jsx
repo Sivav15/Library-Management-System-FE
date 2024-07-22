@@ -28,7 +28,7 @@ const Navbar = () => {
     const allLinks = [
         { to: '/admin/dashboard', label: 'Dashboard', roles: ['admin'] },
         { to: '/user/books', label: 'Books', roles: ['user'] },
-        { to: '/order', label: 'Order', roles: ['user'] },
+        // { to: '/order', label: 'Order', roles: ['user'] },
     ];
 
     const links = allLinks.filter(link => link.roles.includes(role));

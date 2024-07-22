@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminLayout from './layout/AdminLayout';
 import Dashboard from './pages/Dashboard';
+import Admin_ProtectedRoute from './protected route/Admin_ProtectedRoute';
+import User_ProtectedRoute from './protected route/User_ProtectedRoute';
 
 
 function App() {
@@ -14,7 +16,9 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/admin",
-      element: <AdminLayout />,
+      element: <Admin_ProtectedRoute>
+        <AdminLayout />
+      </Admin_ProtectedRoute>,
       children: [
         {
           path: "",
@@ -28,7 +32,9 @@ function App() {
     },
     {
       path: "/user",
-      element: <UserLayout />,
+      element: <User_ProtectedRoute>
+        <UserLayout />
+      </User_ProtectedRoute>,
       children: [
         {
           path: "",

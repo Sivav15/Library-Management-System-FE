@@ -187,7 +187,7 @@ const Register = () => {
                     </form>
                     <div className="mt-4 text-center">
                         <p className="text-gray-600">Already have an account? <span onClick={loginNavigation} className="text-blue-600 cursor-pointer">Login</span></p>
-                        {/* <GoogleCallback /> */}
+                        <GoogleCallback action={'register'} message={'Signup with Google'} role={role} setRole={setRole} />
                     </div>
                 </div>
 

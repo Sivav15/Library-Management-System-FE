@@ -9,7 +9,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
 // Authenticate
 export const register_api = `${host}/api/auth/register`;
 export const login_api = `${host}/api/auth/login`;
-export const googleCallback_api = `${host}/api/auth/google/register`;
+export const googleCallback_api = `${host}/api/auth/google/callback`;
 
 // books
 
