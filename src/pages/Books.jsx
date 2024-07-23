@@ -54,9 +54,9 @@ function Books() {
 
 
     return (
-        <div>
-            <div className="mx-auto  p-2 md:p-4">
-                <div className=" grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-flow-col-6 gap-2 md:gap-4">
+        <div className='w-full'>
+            <div className="mx-auto  p-2 md:p-4 w-full">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-flow-col-6 gap-2 md:gap-4 w-full">
                     {
                         books.map((book) => {
                             return <BookCard key={book._id} title={book.title} img={book.img} author={book.author} _id={book._id} isBorrowedByUser={book.isBorrowedByUser} />
