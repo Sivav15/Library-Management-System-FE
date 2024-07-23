@@ -107,7 +107,7 @@ const BookCard = ({ title, img, author, _id, isBorrowedByUser }) => {
 
     return (
         <div className="bg-white rounded-lg shadow-md border border-gray-400 overflow-hidden">
-            <img className="w-full h-48 object-cover" src={`${viewBook_img_api}/${img}`} alt={title} />
+            <img className="w-full h-52 object-contain" src={`${viewBook_img_api}/${img}`} alt={title} />
             <div className="p-1 md:p-4">
                 <h2 className="text-center text-md md:text-lg font-bold mb-0.5">Book Details</h2>
                 <p className="text-center font-semibold text-md mb-1">{title}</p>
